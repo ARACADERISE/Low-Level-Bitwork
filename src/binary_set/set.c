@@ -1,6 +1,7 @@
 #include "set.h"
+#include <stdio.h>
 
-BinaryDataStruct* init_binary_data_struct(int BINARY_POINTER, int* __data) {
+BinaryDataStruct* init_binary_data_struct(int BINARY_POINTER, int** __data) {
     BinaryDataStruct* b_d_s = calloc(1,sizeof(*b_d_s));
 
     b_d_s->init_bit_data = __data;
@@ -21,36 +22,36 @@ BinaryDataStruct* init_binary_data_struct(int BINARY_POINTER, int* __data) {
     return b_d_s;
 }
 /* HELPER FUNCTIONS */
-int** resolve_into_sections(BinaryDataStruct* b_d_s,int* __data, int __sec_size) {
+void* resolve_into_sections(BinaryDataStruct* b_d_s,int** __data, int __sec_size, size_t amount_of_elements) {
+    int index=0,index_=0, amount_of_items=0, amount_of_arrays=0, total_items=0;
 
-    int index = 0, current_sec_size = 0, total_amount_of_arrays = 0, current_used_array = 0;
-    for(;; index++) {
-        if(!(__data[index])) break;
-        current_sec_size++;
+    for(;index <= amount_of_elements;index++) {
 
-        if(current_sec_size == __sec_size) {
-            total_amount_of_arrays++;
+        if(amount_of_items == __sec_size) {
+            amount_of_arrays++;
             b_d_s->binary_sections = realloc(
                 b_d_s->binary_sections,
-                total_amount_of_arrays*sizeof(*b_d_s->binary_sections)
+                amount_of_arrays*sizeof(int**)*sizeof(*b_d_s->binary_sections)
             );
-            current_sec_size = 0;
+            b_d_s->binary_sections[amount_of_arrays] = calloc(
+                amount_of_items,
+                sizeof(int**)*sizeof(*b_d_s->binary_sections)
+            );
+            total_items+=amount_of_items;
+
+            amount_of_items = 0;
         }
 
-        if(current_sec_size == 0) {
-            b_d_s->binary_sections[total_amount_of_arrays] = realloc(
-                b_d_s->binary_sections,
-                (current_sec_size+1)*sizeof(*b_d_s->binary_sections[total_amount_of_arrays])
-            );
-        } else {
-            b_d_s->binary_sections[total_amount_of_arrays] = realloc(
-                b_d_s->binary_sections,
-                current_sec_size*sizeof(*b_d_s->binary_sections[total_amount_of_arrays])
+        if(!(amount_of_items == 0)) {
+            b_d_s->binary_sections[amount_of_arrays] = realloc(
+                b_d_s->binary_sections[amount_of_arrays],
+                amount_of_items*sizeof(int*)
             );
         }
 
-        b_d_s->binary_sections[total_amount_of_arrays][current_sec_size] = __data[index];
-        
+        b_d_s->binary_sections[amount_of_arrays][amount_of_items] = __data[index_][index];
+
+        amount_of_items++;
     }
 
     return b_d_s->binary_sections;

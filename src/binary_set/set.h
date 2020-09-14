@@ -10,7 +10,7 @@ typedef struct Binary_Data_Struct {
         binary_set_ptr_mid // this will figure out the total length of the binary then figure where to assign the binary pointer at(dependable on the offset)
     } BinaryPtr;
 
-    int* init_bit_data; // this will hold all initital values of each "bit" for possible reference when alligning or offsetting bits(or both)
+    int** init_bit_data; // this will hold all initital values of each "bit" for possible reference when alligning or offsetting bits(or both)
 
     int offset; // offset of each bit
     int allignment; // allign each bit if possible
@@ -33,6 +33,8 @@ typedef struct Binary_Data_Struct {
     size_t amount_of_allignments;
 } BinaryDataStruct;
 
+void* resolve_into_sections(BinaryDataStruct* b_d_s,int** __data, int __sec_size, size_t amount_of_elements);
+
 /*
     The BINARY_POINTER will set the pointer of where we are working with each bit at.
 
@@ -50,7 +52,7 @@ typedef struct Binary_Data_Struct {
         binary_set_ptr_end indicates that we want to work with the very last "bit" of any value. It is also a indicator that the user is looking to elongate the initial value based off of the "last" bit.
         Another words, if you want everything but the very last "bit" of a value to stay the same, use binary_set_ptr_end.
 */
-BinaryDataStruct* init_binary_data_struct(int BINARY_POINTER, int* __data);
+BinaryDataStruct* init_binary_data_struct(int BINARY_POINTER, int** __data);
 
 /*
     allign_bit function:
