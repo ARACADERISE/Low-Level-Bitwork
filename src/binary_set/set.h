@@ -14,8 +14,11 @@ typedef struct Binary_Data_Struct {
 
     int offset; // offset of each bit
     int allignment; // allign each bit if possible
-    int left_over_memory; // this will be the amount of memory left aside after the allignment of each bit
+    int left_over_memory; // this will be the amount of memory left aside after the allignment of each bit_allocation_allignment
     int** binary_sections; // the binary will be split into "sections"
+    size_t amount_of_sections;
+    size_t amount_of_bits_in_each_section;
+
     int* binary_bits; // the sections will then be split to bits(another words, each bit of each "sections" will be pulled and stored seperately)
     int* binary_bit_allignments; // this will be each "bits" offset dependable on the shift of each binary "bit" off of the offset set by the user or each "bits" allignment
     /*
@@ -32,8 +35,6 @@ typedef struct Binary_Data_Struct {
     size_t amount_of_offsets;
     size_t amount_of_allignments;
 } BinaryDataStruct;
-
-void* resolve_into_sections(BinaryDataStruct* b_d_s,int** __data, int __sec_size, size_t amount_of_elements);
 
 /*
     The BINARY_POINTER will set the pointer of where we are working with each bit at.
@@ -66,6 +67,6 @@ BinaryDataStruct* init_binary_data_struct(int BINARY_POINTER, int** __data);
             alligning a bit sets each bit to an "alligned" value, most likely allowing the allocation size to double its value.
             This is useful when you want strict alloctions, but want to make sure there is extra memory for addition allocations.
 */
-BinaryDataStruct* allign_bit(BinaryDataStruct* data_struct, int offset, int allignment, unsigned char* array_);
+BinaryDataStruct* allign_bits(BinaryDataStruct* data_struct, int offset, int allignment, int amount_of_elements);
 
 #endif
