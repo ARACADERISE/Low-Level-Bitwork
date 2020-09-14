@@ -93,7 +93,7 @@ BinaryDataStruct* allign_bits(BinaryDataStruct* data_struct, int offset, int all
     float size = 0;
     float figure_by = 0;
     for(int i = 0; i < index; i++) {
-        if(abs(cur[i]-cur[i+1]) == cur[i] || abs(cur[i]-cur[i+1]) == cur[i+1]) {
+        if(ABS_NUMBER_BITWISE(cur[i]-cur[i+1]) == cur[i] || ABS_NUMBER_BITWISE(cur[i]-cur[i+1]) == cur[i+1]) {
             size = abs(cur[i]-cur[i+1]);
             break;
         }
@@ -106,6 +106,12 @@ BinaryDataStruct* allign_bits(BinaryDataStruct* data_struct, int offset, int all
 
     if(size == outcome_number) {
         // the value can only double its doubled value(or offset of 1)
+        /*
+            Example:
+                Lets say size is of the value 40.
+                Double the size, get 80,
+                double the doubled size, get 160.
+        */
         if(offset <= 2) {
             size = (int)size << offset;
 

@@ -36,6 +36,8 @@ typedef struct Binary_Data_Struct {
     size_t amount_of_allignments;
 } BinaryDataStruct;
 
+#define ABS_NUMBER_BITWISE(number) (~number+1)
+
 /*
     The BINARY_POINTER will set the pointer of where we are working with each bit at.
 
